@@ -49,7 +49,7 @@ import { trim, rtrim } from 'vs/base/common/strings';
 import { IUriIdentityService } from 'vs/platform/uriIdentity/common/uriIdentity';
 import { ResourceFileEdit } from 'vs/editor/browser/services/bulkEditService';
 import { IExplorerService } from 'vs/workbench/contrib/files/browser/files';
-import { BrowserFileUpload, FileDownload } from 'vs/workbench/contrib/files/browser/fileImportExport';
+import { BrowserFileUpload } from 'vs/workbench/contrib/files/browser/fileImportExport';
 import { IPaneCompositePartService } from 'vs/workbench/services/panecomposite/browser/panecomposite';
 import { IRemoteAgentService } from 'vs/workbench/services/remote/common/remoteAgentService';
 import { IPathService } from 'vs/workbench/services/path/common/pathService';
@@ -70,8 +70,8 @@ export const MOVE_FILE_TO_TRASH_LABEL = nls.localize('delete', "Delete");
 export const COPY_FILE_LABEL = nls.localize('copyFile', "Copy");
 export const PASTE_FILE_LABEL = nls.localize('pasteFile', "Paste");
 export const FileCopiedContext = new RawContextKey<boolean>('fileCopied', false);
-export const DOWNLOAD_COMMAND_ID = 'explorer.download';
-export const DOWNLOAD_LABEL = nls.localize('download', "Download...");
+// export const DOWNLOAD_COMMAND_ID = 'explorer.download';
+// export const DOWNLOAD_LABEL = nls.localize('download', "Download...");
 export const UPLOAD_COMMAND_ID = 'explorer.upload';
 export const UPLOAD_LABEL = nls.localize('upload', "Upload...");
 const CONFIRM_DELETE_SETTING_KEY = 'explorer.confirmDelete';
@@ -1051,29 +1051,29 @@ export const cutFileHandler = async (accessor: ServicesAccessor) => {
 	}
 };
 
-const downloadFileHandler = async (accessor: ServicesAccessor) => {
-	const explorerService = accessor.get(IExplorerService);
-	const notificationService = accessor.get(INotificationService);
-	const instantiationService = accessor.get(IInstantiationService);
+// const downloadFileHandler = async (accessor: ServicesAccessor) => {
+// 	const explorerService = accessor.get(IExplorerService);
+// 	const notificationService = accessor.get(INotificationService);
+// 	const instantiationService = accessor.get(IInstantiationService);
 
-	const context = explorerService.getContext(true);
-	const explorerItems = context.length ? context : explorerService.roots;
+// 	const context = explorerService.getContext(true);
+// 	const explorerItems = context.length ? context : explorerService.roots;
 
-	const downloadHandler = instantiationService.createInstance(FileDownload);
+// 	const downloadHandler = instantiationService.createInstance(FileDownload);
 
-	try {
-		await downloadHandler.download(explorerItems);
-	} catch (error) {
-		notificationService.error(error);
+// 	try {
+// 		await downloadHandler.download(explorerItems);
+// 	} catch (error) {
+// 		notificationService.error(error);
 
-		throw error;
-	}
-};
+// 		throw error;
+// 	}
+// };
 
-CommandsRegistry.registerCommand({
-	id: DOWNLOAD_COMMAND_ID,
-	handler: downloadFileHandler
-});
+// CommandsRegistry.registerCommand({
+// 	id: DOWNLOAD_COMMAND_ID,
+// 	handler: downloadFileHandler
+// });
 
 const uploadFileHandler = async (accessor: ServicesAccessor) => {
 	const explorerService = accessor.get(IExplorerService);
