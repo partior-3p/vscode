@@ -1,0 +1,62 @@
+name: Build Release
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - custom-build
+jobs:
+  compile-release:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Node Version
+        id: node_version
+        run: |-
+          echo "NODE_VERSION=`cat .nvmrc`" | tee -a $GITHUB_OUTPUT
+
+      - name: VSCode Version
+        id: version
+        run: |-
+          echo "VERSION=`cat package.json | jq '.version' | sed 's|"||g'`" | tee -a $GITHUB_OUTPUT
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: |-
+          sudo apt update && sudo apt-get install -y build-essential g++ libx11-dev libxkbfile-dev libsecret-1-dev libkrb5-dev python-is-python3
+          npm install --global yarn
+          yarn install
+
+      - name: Generate filename and tag name
+        id: filename_tag
+        run: |-
+          echo TAG="${{ steps.version.outputs.VERSION }}-custom-build" | tee -a $GITHUB_OUTPUT
+          echo FILENAME="vscode-web-min-${{ steps.version.outputs.VERSION }}-custom-build.tar" | tee -a $GITHUB_OUTPUT
+
+      - name: Build Release
+        run: |-
+          sudo apt install tree -y
+          npx gulp vscode-reh-web-linux-x64-min
+
+      - name: Package Release
+        run: |-
+          ls -lah | grep 'out'
+          (cd out-vscode-reh-web-min && tar -cf ../${{ steps.filename_tag.outputs.FILENAME }} *)
+
+      - name: Delete existing release and tag if exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |-
+          gh release delete ${{ steps.filename_tag.outputs.TAG }} --cleanup-tag || true
+
+      - name: Create Tag and Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |-
+          gh release create --latest --title "Release ${{ steps.filename_tag.outputs.TAG }}" ${{ steps.filename_tag.outputs.TAG }} ${{ steps.filename_tag.outputs.FILENAME }} --notes ""
