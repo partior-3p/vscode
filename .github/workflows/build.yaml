@@ -14,20 +14,14 @@ jobs:
         with:
           ref: custom-build
 
-      - name: Node Version
-        id: node_version
-        run: |-
-          echo "NODE_VERSION=`cat .nvmrc`" | tee -a $GITHUB_OUTPUT
-
       - name: VSCode Version
         id: version
         run: |-
           echo "VERSION=`cat package.json | jq '.version' | sed 's|"||g'`" | tee -a $GITHUB_OUTPUT
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
+          node-version-file: .nvmrc
 
       - name: Install dependencies
         run: |-
@@ -39,17 +33,53 @@ jobs:
         id: filename_tag
         run: |-
           echo TAG="${{ steps.version.outputs.VERSION }}-custom-build" | tee -a $GITHUB_OUTPUT
-          echo FILENAME="vscode-web-min-${{ steps.version.outputs.VERSION }}-custom-build.tar" | tee -a $GITHUB_OUTPUT
+          echo FILENAME="vscode-reh-web-linux-x64-min-${{ steps.version.outputs.VERSION }}-custom-build.tar" | tee -a $GITHUB_OUTPUT
+
+      - name: Add gallery extension and update product.json
+        run: |-
+          export DATETIME=`TZ='Asia/Singapore' date +%d-%b-%YT%H:%M:%S%z`
+
+          jq '. |= . + {extensionsGallery : {serviceUrl: "https://marketplace.visualstudio.com/_apis/public/gallery", "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index",
+                "itemUrl": "https://marketplace.visualstudio.com/items"}}' product.json > product-updated.json && mv product-updated.json product.json
+          jq '. |= . + {linkProtectionTrustedDomains : ["https://console.cloud.google.com","https://open-vsx.org"]}' product.json > product-updated.json && mv product-updated.json product.json
+          jq '. |= . + {commit : "$GITHUB_SHA"}' product.json | envsubst > product-updated.json && mv product-updated.json product.json
+          jq '. |= . + {date : "$DATETIME"}' product.json | envsubst > product-updated.json && mv product-updated.json product.json
+          jq '. |= . + {version : "${{ steps.version.outputs.VERSION }}"}' product.json > product-updated.json && mv product-updated.json product.json
+          jq '.applicationName |= "code-oss-cloud-workstations"'  product.json > product-updated.json && mv product-updated.json product.json
+          jq '.dataFolderName |= ".codeoss-cloudworkstations"'  product.json > product-updated.json && mv product-updated.json product.json
+          jq '.win32MutexName |= "codeosscloudworkstations"'  product.json > product-updated.json && mv product-updated.json product.json
+          jq '.serverApplicationName |= "codeoss-cloudworkstations"'  product.json > product-updated.json && mv product-updated.json product.json
+          jq '.serverDataFolderName |= ".codeoss-cloudworkstations"'  product.json > product-updated.json && mv product-updated.json product.json
+
+          cat product.json
+
 
       - name: Build Release
         run: |-
-          sudo apt install tree -y
-          npx gulp vscode-reh-web-linux-x64-min
+          yarn gulp vscode-reh-web-linux-x64-min
 
       - name: Package Release
         run: |-
           ls -lah | grep 'out'
-          (cd out-vscode-reh-web-min && tar -cf ../${{ steps.filename_tag.outputs.FILENAME }} *)
+          for x in `ls | grep 'out'`
+          do
+            echo -------------
+            echo ls $x
+            ls $x
+            echo -------------
+          done
+          echo -------------
+          echo ls ..
+          ls ..
+          echo -------------
+          for x in `ls .. | grep -vP '^vscode$'`
+          do
+            echo -------------
+            echo ls ../$x
+            ls ../$x
+            echo -------------
+          done
+          (cd ../vscode-reh-web-linux-x64 && tar -cf ../vscode/${{ steps.filename_tag.outputs.FILENAME }} *)
 
       - name: Delete existing release and tag if exists
         env:
@@ -61,4 +91,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |-
-          gh release create --latest --title "Release ${{ steps.filename_tag.outputs.TAG }}" ${{ steps.filename_tag.outputs.TAG }} ${{ steps.filename_tag.outputs.FILENAME }} --notes ""
+          git tag ${{ steps.filename_tag.outputs.TAG }} && git push origin ${{ steps.filename_tag.outputs.TAG }}
+          gh release create --latest --title "Release ${{ steps.filename_tag.outputs.TAG }}" --verify-tag  ${{ steps.filename_tag.outputs.TAG }} ${{ steps.filename_tag.outputs.FILENAME }} --notes ""
