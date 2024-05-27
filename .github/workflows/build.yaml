@@ -7,10 +7,12 @@ on:
       - custom-build
 jobs:
   compile-release:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: custom-build
 
       - name: Node Version
         id: node_version
