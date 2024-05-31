@@ -1,0 +1,229 @@
+{
+	"nameShort": "Code OSS - Cloud Workstations",
+	"nameLong": "Code OSS for Cloud Workstations",
+	"applicationName": "code-oss-cloud-workstations",
+	"dataFolderName": ".codeoss-cloudworkstations",
+	"win32MutexName": "codeosscloudworkstations",
+	"serverApplicationName": "codeoss-cloudworkstations",
+	"serverDataFolderName": ".codeoss-cloudworkstations",
+	"win32DirName": "Code OSS Cloud Workstations",
+	"win32NameVersion": "Code OSS Cloud Workstations",
+	"win32RegValueName": "CodeOSSCloudWorkstations",
+	"win32AppUserModelId": "Code OSS Cloud Workstations",
+	"win32ShellNameShort": "C&ode OSS Cloud Workstations",
+	"darwinBundleIdentifier": "codeoss.cloudworkstations",
+	"linuxIconName": "codeoss.cloudworkstations",
+	"urlProtocol": "code-oss",
+	"webviewContentExternalBaseUrlTemplate": "https://{{uuid}}.cloudworkstations.googleusercontent.com/code-oss/0999faf76c66e716285828f782905ca15aa1e9e3/out/vs/workbench/contrib/webview/browser/pre/",
+	"extensionAllowedProposedApi": ["ms-vscode.vscode-js-profile-flame", "ms-vscode.vscode-js-profile-table", "GitHub.remotehub", "GitHub.remotehub-insiders"],
+	"extensionTips": {
+		"muhammad-sammy.csharp": "{**/*.cs,**/project.json,**/global.json,**/*.csproj,**/*.cshtml,**/*.sln,**/appsettings.json}",
+		"felixfbecker.php-intellisense": "{**/*.php,**/php.ini}",
+		"felixfbecker.php-debug": "{**/*.php,**/php.ini}",
+		"golang.Go": "**/*.go",
+		"HashiCorp.terraform": "**/*.tf",
+		"ms-azuretools.vscode-docker": "{**/dockerfile,**/Dockerfile,**/docker-compose.yml,**/docker-compose.*.yml,**/*.cs,**/project.json,**/global.json,**/*.csproj,**/*.cshtml,**/*.sln,**/appsettings.json,**/*.py,**/*.ipynb,**/*.js,**/*.ts,**/package.json}",
+		"ms-python.python": "{**/*.py,**/*.ipynb}",
+		"ms-toolsai.jupyter": "{**/*.ipynb}",
+		"ms-vscode.cpptools-extension-pack": "{**/*.c,**/*.cpp,**/*.cc,**/.cxx,**/*.hh,**/*.hpp,**/*.hxx,**/*.h}",
+		"ms-vscode.PowerShell": "{**/*.ps1,**/*.psd1,**/*.psm1,**/*.ps.config,**/*.ps1.config}",
+		"rebornix.Ruby": "{**/*.rb,**/*.erb,**/*.reek,**/.fasterer.yml,**/ruby-lint.yml,**/.rubocop.yml}",
+		"rust-lang.rust": "{**/*.rs,**/*.rslib}",
+		"vscjava.vscode-maven": "**/pom.xml"
+	},
+	"extensionRecommendations": {
+		"Dart-Code.dart-code": {
+			"onFileOpen": [{
+				"languages": ["dart"],
+				"important": true
+			}, {
+				"pathGlob": "{**/*.dart}",
+				"important": true
+			}]
+		},
+		"Dart-Code.flutter": {
+			"onFileOpen": [{
+				"languages": ["dart"],
+				"important": true
+			}, {
+				"pathGlob": "{**/*.dart}",
+				"important": true
+			}]
+		},
+		"golang.Go": {
+			"onFileOpen": [{
+				"languages": ["go"],
+				"important": true
+			}, {
+				"pathGlob": "**/*.go",
+				"important": true
+			}]
+		},
+		"muhammad-sammy.csharp": {
+			"onFileOpen": [{
+				"languages": ["csharp"],
+				"important": true
+			}, {
+				"pathGlob": "{**/*.cs,**/global.json,**/*.csproj,**/*.cshtml,**/*.sln}",
+				"important": true
+			}]
+		},
+		"ms-python.python": {
+			"onFileOpen": [{
+				"languages": ["python"],
+				"important": true
+			}, {
+				"pathGlob": "{**/*.py}",
+				"important": true
+			}]
+		},
+		"ms-toolsai.jupyter": {
+			"onFileOpen": [{
+				"pathGlob": "{**/*.ipynb}",
+				"important": true
+			}]
+		},
+		"ms-vscode.cpptools-extension-pack": {
+			"onFileOpen": [{
+				"languages": ["c", "cpp"],
+				"important": true
+			}, {
+				"pathGlob": "{**/*.c,**/*.cpp,**/*.cc,**/.cxx,**/*.hh,**/*.hpp,**/*.hxx,**/*.h}",
+				"important": true
+			}]
+		},
+		"vscjava.vscode-java-pack": {
+			"onFileOpen": [{
+				"languages": ["java"],
+				"important": true
+			}, {
+				"pathGlob": "{**/*.java}",
+				"important": true
+			}]
+		}
+	},
+	"keymapExtensionTips": ["vscodevim.vim", "ms-vscode.sublime-keybindings", "ms-vscode.atom-keybindings", "ms-vscode.brackets-keybindings", "ms-vscode.vs-keybindings", "ms-vscode.notepadplusplus-keybindings", "k--kato.intellij-idea-keybindings", "alphabotsec.vscode-eclipse-keybindings"],
+	"languageExtensionTips": ["muhammad-sammy.csharp", "ms-python.python", "ms-toolsai.jupyter", "vscjava.vscode-java-pack", "golang.go", "ms-vscode.powershell", "dart-code.dart-code", "rust-lang.rust", "rebornix.ruby"],
+	"configBasedExtensionTips": {
+		"maven": {
+			"configPath": "pom.xml",
+			"configName": "Maven",
+			"recommendations": {
+				"vscjava.vscode-java-pack": {
+					"name": "Java",
+					"important": true,
+					"isExtensionPack": true,
+					"whenNotInstalled": ["ASF.apache-netbeans-java"]
+				},
+				"Pivotal.vscode-boot-dev-pack": {
+					"name": "Spring Boot Extension Pack",
+					"isExtensionPack": true
+				}
+			}
+		},
+		"gradle": {
+			"configPath": "build.gradle",
+			"configName": "Gradle",
+			"recommendations": {
+				"vscjava.vscode-java-pack": {
+					"name": "Java",
+					"important": true,
+					"isExtensionPack": true,
+					"whenNotInstalled": ["ASF.apache-netbeans-java"]
+				}
+			}
+		}
+	},
+	"extensionKeywords": {
+		"md": ["Markdown"],
+		"js": ["JavaScript"],
+		"jsx": ["JavaScript"],
+		"es6": ["JavaScript"],
+		"html": ["Html"],
+		"ts": ["TypeScript"],
+		"tsx": ["TypeScript"],
+		"css": ["CSS"],
+		"scss": ["SASS"],
+		"txt": ["Text"],
+		"php": ["PHP"],
+		"php3": ["PHP"],
+		"php4": ["PHP"],
+		"ph3": ["PHP"],
+		"ph4": ["PHP"],
+		"xml": ["XML"],
+		"py": ["Python"],
+		"pyc": ["Python"],
+		"pyd": ["Python"],
+		"pyo": ["Python"],
+		"pyw": ["Python"],
+		"pyz": ["Python"],
+		"java": ["Java"],
+		"class": ["Java"],
+		"jar": ["Java"],
+		"c": ["c", "objective c", "objective-c"],
+		"m": ["objective c", "objective-c"],
+		"mm": ["objective c", "objective-c"],
+		"cpp": ["cpp", "c plus plus", "c", "c++"],
+		"cc": ["cpp", "c plus plus", "c", "c++"],
+		"cxx": ["cpp", "c plus plus", "c++"],
+		"hh": ["cpp", "c plus plus", "c++"],
+		"hpp": ["cpp", "c++"],
+		"h": ["cpp", "c plus plus", "c++", "c", "objective c", "objective-c"],
+		"sql": ["sql"],
+		"sh": ["bash"],
+		"bash": ["bash"],
+		"zsh": ["bash", "zshell"],
+		"cs": ["c#", "csharp"],
+		"csproj": ["c#", "csharp"],
+		"sln": ["c#", "csharp"],
+		"go": ["go"],
+		"sty": ["latex"],
+		"tex": ["latex"],
+		"ps": ["powershell"],
+		"ps1": ["powershell"],
+		"rs": ["rust"],
+		"rslib": ["rust"],
+		"hs": ["haskell"],
+		"lhs": ["haskell"],
+		"scm": ["scheme"],
+		"ss": ["scheme"],
+		"clj": ["clojure"],
+		"cljs": ["clojure"],
+		"cljc": ["clojure"],
+		"edn": ["clojure"],
+		"erl": ["erlang"],
+		"hrl": ["erlang"],
+		"scala": ["scala"],
+		"sc": ["scala"],
+		"pl": ["perl"],
+		"pm": ["perl"],
+		"t": ["perl"],
+		"pod": ["perl"],
+		"groovy": ["groovy"],
+		"swift": ["swift"],
+		"rb": ["ruby"],
+		"rbw": ["ruby"],
+		"jl": ["julia"],
+		"f": ["fortran"],
+		"for": ["fortran"],
+		"f90": ["fortran"],
+		"f95": ["fortran"],
+		"coffee": ["CoffeeScript"],
+		"litcoffee": ["CoffeeScript"],
+		"yaml": ["yaml"],
+		"yml": ["yaml"],
+		"dart": ["dart"],
+		"json": ["json"]
+	},
+	"builtInExtensions": [],
+	"extensionAllowedBadgeProviders": ["api.bintray.com", "api.travis-ci.com", "api.travis-ci.org", "app.fossa.io", "badge.buildkite.com", "badge.fury.io", "badge.waffle.io", "badgen.net", "badges.frapsoft.com", "badges.gitter.im", "badges.greenkeeper.io", "cdn.travis-ci.com", "cdn.travis-ci.org", "ci.appveyor.com", "circleci.com", "cla.opensource.microsoft.com", "codacy.com", "codeclimate.com", "codecov.io", "coveralls.io", "david-dm.org", "deepscan.io", "dev.azure.com", "docs.rs", "flat.badgen.net", "gemnasium.com", "githost.io", "gitlab.com", "godoc.org", "goreportcard.com", "img.shields.io", "isitmaintained.com", "marketplace.visualstudio.com", "nodesecurity.io", "opencollective.com", "snyk.io", "travis-ci.com", "travis-ci.org", "visualstudio.com", "vsmarketplacebadge.apphb.com", "www.bithound.io", "www.versioneye.com"],
+	"extensionAllowedBadgeProvidersRegex": ["^https:\\/\\/github\\.com\\/[^/]+\\/[^/]+\\/workflows\\/.*badge\\.svg"],
+	"extensionsGallery": {
+		"serviceUrl": "https://open-vsx.org/vscode/gallery",
+		"itemUrl": "https://open-vsx.org/vscode/item",
+		"resourceUrlTemplate": "https://open-vsx.org/vscode/asset/{publisher}/{name}/{version}/Microsoft.VisualStudio.Code.WebResources/{path}",
+		"controlUrl": "",
+		"recommendationsUrl": ""
+	},
+	"linkProtectionTrustedDomains": ["https://console.cloud.google.com", "https://open-vsx.org"]
+}

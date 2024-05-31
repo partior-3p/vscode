@@ -38,21 +38,12 @@ jobs:
       - name: Add gallery extension and update product.json
         run: |-
           export DATETIME=`TZ='Asia/Singapore' date +%d-%b-%YT%H:%M:%S%z`
-
-          jq '. |= . + {extensionsGallery : {serviceUrl: "https://marketplace.visualstudio.com/_apis/public/gallery", "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index",
-                "itemUrl": "https://marketplace.visualstudio.com/items"}}' product.json > product-updated.json && mv product-updated.json product.json
-          jq '. |= . + {linkProtectionTrustedDomains : ["https://console.cloud.google.com","https://open-vsx.org"]}' product.json > product-updated.json && mv product-updated.json product.json
+          jq -s '.[0] * .[1]' product.json product-patch.json > product-updated.json && mv product-updated.json product.json
           jq '. |= . + {commit : "$GITHUB_SHA"}' product.json | envsubst > product-updated.json && mv product-updated.json product.json
           jq '. |= . + {date : "$DATETIME"}' product.json | envsubst > product-updated.json && mv product-updated.json product.json
           jq '. |= . + {version : "${{ steps.version.outputs.VERSION }}"}' product.json > product-updated.json && mv product-updated.json product.json
-          jq '.applicationName |= "code-oss-cloud-workstations"'  product.json > product-updated.json && mv product-updated.json product.json
-          jq '.dataFolderName |= ".codeoss-cloudworkstations"'  product.json > product-updated.json && mv product-updated.json product.json
-          jq '.win32MutexName |= "codeosscloudworkstations"'  product.json > product-updated.json && mv product-updated.json product.json
-          jq '.serverApplicationName |= "codeoss-cloudworkstations"'  product.json > product-updated.json && mv product-updated.json product.json
-          jq '.serverDataFolderName |= ".codeoss-cloudworkstations"'  product.json > product-updated.json && mv product-updated.json product.json
 
           cat product.json
-
 
       - name: Build Release
         run: |-
