@@ -1,0 +1,86 @@
+name: Build Release
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - custom_build_1.83.1
+jobs:
+  compile-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: custom_build_1.83.1
+
+      - name: VSCode Version
+        id: version
+        run: |-
+          echo "VERSION=`cat package.json | jq '.version' | sed 's|"||g'`" | tee -a $GITHUB_OUTPUT
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install dependencies
+        run: |-
+          sudo apt update && sudo apt-get install -y build-essential g++ libx11-dev libxkbfile-dev libsecret-1-dev libkrb5-dev python-is-python3
+          npm install --global yarn
+          yarn install
+
+      - name: Generate filename and tag name
+        id: filename_tag
+        run: |-
+          echo TAG="${{ steps.version.outputs.VERSION }}-custom-build" | tee -a $GITHUB_OUTPUT
+          echo FILENAME="vscode-reh-web-linux-x64-min-${{ steps.version.outputs.VERSION }}-custom-build.tar" | tee -a $GITHUB_OUTPUT
+
+      - name: Add gallery extension and update product.json
+        run: |-
+          export DATETIME=`TZ='Asia/Singapore' date +%d-%b-%YT%H:%M:%S%z`
+          jq -s '.[0] * .[1]' product.json product-patch.json > product-updated.json && mv product-updated.json product.json
+          jq '. |= . + {commit : "$GITHUB_SHA"}' product.json | envsubst > product-updated.json && mv product-updated.json product.json
+          jq '. |= . + {date : "$DATETIME"}' product.json | envsubst > product-updated.json && mv product-updated.json product.json
+          jq '. |= . + {version : "${{ steps.version.outputs.VERSION }}"}' product.json > product-updated.json && mv product-updated.json product.json
+
+          cat product.json
+
+      - name: Build Release
+        run: |-
+          yarn gulp vscode-reh-web-linux-x64-min
+
+      - name: Package Release
+        run: |-
+          ls -lah | grep 'out'
+          for x in `ls | grep 'out'`
+          do
+            echo -------------
+            echo ls $x
+            ls $x
+            echo -------------
+          done
+          echo -------------
+          echo ls ..
+          ls ..
+          echo -------------
+          for x in `ls .. | grep -vP '^vscode$'`
+          do
+            echo -------------
+            echo ls ../$x
+            ls ../$x
+            echo -------------
+          done
+          (cd ../vscode-reh-web-linux-x64 && tar -cf ../vscode/${{ steps.filename_tag.outputs.FILENAME }} *)
+
+      - name: Delete existing release and tag if exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |-
+          gh release delete ${{ steps.filename_tag.outputs.TAG }} --cleanup-tag || true
+
+      - name: Create Tag and Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |-
+          git tag ${{ steps.filename_tag.outputs.TAG }} && git push origin ${{ steps.filename_tag.outputs.TAG }}
+          gh release create --latest --title "Release ${{ steps.filename_tag.outputs.TAG }}" --verify-tag  ${{ steps.filename_tag.outputs.TAG }} ${{ steps.filename_tag.outputs.FILENAME }} --notes ""
